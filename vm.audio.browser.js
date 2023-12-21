@@ -39,13 +39,14 @@ Object.extend(Squeak,
         navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia
             || navigator.mozGetUserMedia || navigator.msGetUserMedia;
         if (!navigator.getUserMedia) return errorDo("test: audio input not supported");
+        var self = this;
         navigator.getUserMedia({audio: true, toString: function() {return "audio"}},
             function onSuccess(stream) {
                 var ctxProto = window.AudioContext || window.webkitAudioContext
                     || window.mozAudioContext || window.msAudioContext;
-                this.audioInContext = ctxProto && new ctxProto();
-                this.audioInSource = this.audioInContext.createMediaStreamSource(stream);
-                thenDo(this.audioInContext, this.audioInSource);
+                self.audioInContext = ctxProto && new ctxProto();
+                self.audioInSource = self.audioInContext.createMediaStreamSource(stream);
+                thenDo(self.audioInContext, self.audioInSource);
             },
             function onError() {
                 errorDo("cannot access microphone");
